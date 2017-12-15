@@ -8,14 +8,10 @@ import java.io.Serializable;
  * Created by ucla on 2017/11/5.
  */
 
-public class User extends DataSupport implements Serializable{
+public class Note extends DataSupport{
+
     private String title;
     private String content;
-
-    public User(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
 
     public String getTitle() {
         return title;
@@ -32,4 +28,5 @@ public class User extends DataSupport implements Serializable{
     public void setContent (String content) {
         this.content = content;
     }
+
 }

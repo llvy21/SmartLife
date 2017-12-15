@@ -10,13 +10,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by ucla on 2017/11/5.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>  {
 
-    private List<User> mUserList;
+    private List<Note> mNoteList;
     private AdapterView.OnItemClickListener mListener; // Item点击事件
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -29,9 +31,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
         this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
 
-    public MyAdapter(List<User> userList) {
-        mUserList = userList;
-    }
+    public MyAdapter(List<Note> noteList) {  mNoteList = noteList;  }
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -43,14 +43,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
         final ViewHolder viewHolder = new ViewHolder(view);
-        //判断是否设置了监听器
         if(mOnItemClickListener != null){
-            //为ItemView设置监听器
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int position = viewHolder.getLayoutPosition(); // 1
-                    mOnItemClickListener.onItemClick(viewHolder.itemView,position); // 2
+                    int position = viewHolder.getLayoutPosition();
+                    mOnItemClickListener.onItemClick(viewHolder.itemView,position);
                 }
             });
         }
@@ -60,7 +58,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
                 public boolean onLongClick(View v) {
                     int position = viewHolder.getLayoutPosition();
                     mOnItemLongClickListener.onItemLongClick(viewHolder.itemView,position);
-                    //返回true 表示消耗了事件 事件不会继续传递
                     return true;
                 }
             });
@@ -73,17 +70,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
-        User user = mUserList.get(position);
-        holder.title.setText(user.getTitle());
-        holder.content.setText(user.getContent());
-//        holder.bind(position);
+    public void onBindViewHolder(MyAdapter.ViewHolder holder, int position){
+        Note note = mNoteList.get(position);
+        holder.title.setText(note.getTitle());
+        holder.content.setText(note.getContent());
     }
 
 
     @Override
     public int getItemCount() {
-        return mUserList.size();
+        return mNoteList.size();
     }
 
 
@@ -96,21 +92,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
             super(itemView);
             title = itemView.findViewById(R.id.atitle);
             content = itemView.findViewById(R.id.content);
-
-
-//
-//            User user = new User();
-//            String s = user.getTitle();
-//            title.setText(s);
-
-//            User first = DataSupport.findFirst(User.class);
-
         }
-
-
-//        void bind(int listIndex){
-//            title.setText(String.valueOf(listIndex));
-//        }
     }
 
     public interface OnItemClickListener{
