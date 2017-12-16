@@ -51,6 +51,11 @@ public class NoteBook extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(NoteBook.this, "Long click to edit",Toast.LENGTH_SHORT).show();
+                DataSupport.delete(NoteBook.class, position);
+                List<Note> tofind = DataSupport.findAll(Note.class);
+                noteList.clear();
+                noteList.addAll(tofind);
+                mAdapter.notifyDataSetChanged();
             }
         });
         mAdapter.setOnItemLongClickListener(new MyAdapter.OnItemLongClickListener() {
