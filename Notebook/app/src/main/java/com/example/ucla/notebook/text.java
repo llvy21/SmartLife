@@ -44,26 +44,26 @@ public class text extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            List<Note> tofind = DataSupport.findAll(Note.class);
-            noteList = (ArrayList)tofind;
-            if(pos==noteList.size()){
+                List<Note> tofind = DataSupport.findAll(Note.class);
+                noteList = (ArrayList)tofind;
+                if(pos==noteList.size()){
 
-                Note add = new Note();
-                add.setTitle(title.getText().toString());
-                add.setContent(content.getText().toString());
-                boolean yor = add.save();
-            }
+                    Note add = new Note();
+                    add.setTitle(title.getText().toString());
+                    add.setContent(content.getText().toString());
+                    boolean yor = add.save();
+                }
 
-            else{
-                Note update = new Note();
-                update.setTitle(title.getText().toString());
-                update.setContent(content.getText().toString());
-                update.update(pos+1);
-            }
+                else{
+                    Note update = new Note();
+                    update.setTitle(title.getText().toString());
+                    update.setContent(content.getText().toString());
+                    update.update(pos+1);
+                }
 
-            Intent intent = new Intent();
-            setResult(RESULT_OK, intent);
-            finish();
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
 
             }
         });
