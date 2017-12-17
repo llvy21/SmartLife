@@ -21,16 +21,16 @@ import java.util.List;
 public class text extends Activity {
 
     private EditText title,content;
-    private Button btn;
-    private ArrayList<Note> noteList = new ArrayList<Note>() {};
+    private Button btn,dlbtn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.text1);
-        title = (EditText) findViewById(R.id.title);
-        btn = (Button) findViewById(R.id.save);
-        content = (EditText) findViewById(R.id.content);
+        title =  findViewById(R.id.title);
+        btn = findViewById(R.id.save);
+        dlbtn = findViewById(R.id.delete);
+        content = findViewById(R.id.content);
 
         Intent intent = getIntent();
         final String titl = intent.getStringExtra("title");
@@ -44,9 +44,9 @@ public class text extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 List<Note> tofind = DataSupport.findAll(Note.class);
-                noteList = (ArrayList)tofind;
-                if(pos==noteList.size()){
+                if(pos==tofind.size()){
 
                     Note add = new Note();
                     add.setTitle(title.getText().toString());
@@ -67,6 +67,25 @@ public class text extends Activity {
 
             }
         });
+
+        dlbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                List<Note> tofind = DataSupport.findAll(Note.class);
+                if(pos!=tofind.size()){
+                    tofind.get(pos).delete();
+                }
+
+
+                Intent intent = new Intent();
+                setResult(RESULT_OK, intent);
+                finish();
+
+            }
+        });
+
+
 
     }
 }
