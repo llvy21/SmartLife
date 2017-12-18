@@ -38,7 +38,6 @@ public class NoteBook extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
         mAdapter = new MyAdapter(noteList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 

@@ -27,7 +27,7 @@
         <EditText
             android:id="@+id/content"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="260dp"
             android:ems="10"
             android:gravity="top|center_vertical"
             android:hint="Click here to put down your ideas"

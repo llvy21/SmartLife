@@ -45,25 +45,28 @@ public class text extends Activity {
             @Override
             public void onClick(View view) {
 
-                List<Note> tofind = DataSupport.findAll(Note.class);
-                if(pos==tofind.size()){
+            List<Note> tofind = DataSupport.findAll(Note.class);
 
-                    Note add = new Note();
-                    add.setTitle(title.getText().toString());
-                    add.setContent(content.getText().toString());
-                    boolean yor = add.save();
-                }
+            if(pos==tofind.size())
+            {
+                Note add = new Note();
+                add.setTitle(title.getText().toString());
+                add.setContent(content.getText().toString());
+                add.save();
+            }
 
-                else{
-                    Note update = new Note();
-                    update.setTitle(title.getText().toString());
-                    update.setContent(content.getText().toString());
-                    update.update(pos+1);
-                }
+            else
+            {
+                Note update = new Note();
+                update.setTitle(title.getText().toString());
+                update.setContent(content.getText().toString());
+                update.update(pos+1);
+                Log.d("test", String.valueOf((pos))+update.update(pos+1));
+            }
 
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
 
             }
         });
@@ -72,15 +75,14 @@ public class text extends Activity {
             @Override
             public void onClick(View view) {
 
-                List<Note> tofind = DataSupport.findAll(Note.class);
-                if(pos!=tofind.size()){
-                    tofind.get(pos).delete();
-                }
+            List<Note> tofind = DataSupport.findAll(Note.class);
+            if(pos!=tofind.size()){
+                tofind.get(pos).delete();
+            }
 
-
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+            Intent intent = new Intent();
+            setResult(RESULT_OK, intent);
+            finish();
 
             }
         });
