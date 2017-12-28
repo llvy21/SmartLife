@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 
 import org.litepal.crud.DataSupport;
 
+import java.net.DatagramSocket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,7 @@ import java.util.List;
  * Created by ucla on 2017/11/7.
  */
 
-public class text extends Activity {
+public class text extends AppCompatActivity {
 
     private EditText title,content;
     private Button btn,dlbtn;
@@ -27,10 +29,10 @@ public class text extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.text1);
-        title =  findViewById(R.id.title);
-        btn = findViewById(R.id.save);
-        dlbtn = findViewById(R.id.delete);
-        content = findViewById(R.id.content);
+        title = (EditText) findViewById(R.id.title);
+        btn = (Button) findViewById(R.id.save);
+        dlbtn = (Button) findViewById(R.id.delete);
+        content = (EditText) findViewById(R.id.content);
 
         Intent intent = getIntent();
         final String titl = intent.getStringExtra("title");
@@ -60,8 +62,7 @@ public class text extends Activity {
                 Note update = new Note();
                 update.setTitle(title.getText().toString());
                 update.setContent(content.getText().toString());
-                update.update(pos+1);
-                Log.d("test", String.valueOf((pos))+update.update(pos+1));
+                update.updateAll("title = ? and content = ?",titl,con);
             }
 
             Intent intent = new Intent();
@@ -86,8 +87,6 @@ public class text extends Activity {
 
             }
         });
-
-
 
     }
 }

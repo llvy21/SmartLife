@@ -31,6 +31,7 @@ public class NoteBook extends AppCompatActivity {
     private Bundle bundle = null;
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
