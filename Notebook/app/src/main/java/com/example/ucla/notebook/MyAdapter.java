@@ -72,8 +72,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>  {
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position){
         Note note = mNoteList.get(position);
-        holder.title.setText(note.getTitle());
-        holder.content.setText(note.getContent());
+        CharSequence formattedTitle = ColorPhrase.from(note.getTitle())
+                .withSeparator("{}")
+                .innerColor(0xFFE6454A)
+                .outerColor(0xFF666666)
+                .format();
+        CharSequence formattedContent = ColorPhrase.from(note.getContent())
+                .withSeparator("{}")
+                .innerColor(0xFFE6454A)
+                .outerColor(0xFF666666)
+                .format();
+        holder.title.setText(formattedTitle);
+        holder.content.setText(formattedContent);
     }
 
 
