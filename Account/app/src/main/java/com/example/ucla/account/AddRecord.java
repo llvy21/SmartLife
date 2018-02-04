@@ -72,6 +72,7 @@ public class AddRecord extends AppCompatActivity {
 
                 Intent intent = new Intent(AddRecord.this,AccountList.class);
                 startActivity(intent);
+                finish();
 
             }
         });

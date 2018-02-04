@@ -43,7 +43,6 @@ public class AccountListAdapter extends ArrayAdapter<AccountData>{
 
         money.setText(String.valueOf(accountData.getMoney()));
         if (accountData.getSort()==-1){
-
             money.setTextColor(Color.rgb(255,0,0));
         }
         date.setText(accountData.datetoString());

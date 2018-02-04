@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.litepal.crud.DataSupport;
 
@@ -24,7 +25,26 @@ public class AccountList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accountlist);
 
-        List<AccountData> data = DataSupport.findAll(AccountData.class);
+
+        Intent intent = getIntent();
+        int sort = intent.getIntExtra("sort",7);
+        List<AccountData> data;
+
+        if(sort==7){
+            data = DataSupport.findAll(AccountData.class);
+        }
+        else {
+            int cnt = 0;
+            do{
+                data = DataSupport.where
+                        ("sort = ?",String.valueOf(cnt)).find(AccountData.class);
+                cnt++;
+                if (data.isEmpty()){
+                    continue;
+                }
+                sort--;
+            }while(sort!=-1);
+        }
         AccountListAdapter adapter = new AccountListAdapter(
                 AccountList.this, R.layout.item_accountlist, data);
 
@@ -50,12 +70,14 @@ public class AccountList extends AppCompatActivity {
                 Intent intent = new Intent(AccountList.this, AddRecord.class);
                 intent.putExtra("status", "income");
                 startActivity(intent);
+                finish();
                 return true;
 
             case R.id.action_outcome:
                 Intent intent1 = new Intent(AccountList.this, AddRecord.class);
                 intent1.putExtra("status", "outcome");
                 startActivity(intent1);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

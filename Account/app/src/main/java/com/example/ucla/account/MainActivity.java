@@ -12,6 +12,8 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -21,11 +23,14 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.litepal.crud.DataSupport;
@@ -42,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     private XAxis xAxis;
 
+    private TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         for (AccountData i : data){
             sum[i.getSort()+1]+=i.getMoney();
         }
+        textView=findViewById(R.id.tv_sumup);
+        textView.setText("Income_sum:"+sum[0]+",outcome_sum"+(sum[1]+sum[2]+sum[3]+sum[4]+sum[5]+sum[6]));
 
         pieChartActivity(sum);
 
@@ -65,6 +74,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.activity_main);
+
+        List<AccountData> data = DataSupport.findAll(AccountData.class);
+        float[] sum = new float[7];
+        for (AccountData i : data){
+            sum[i.getSort()+1]+=i.getMoney();
+        }
+        textView=findViewById(R.id.tv_sumup);
+        textView.setText("Income_sum:"+sum[0]+",outcome_sum"+(sum[1]+sum[2]+sum[3]+sum[4]+sum[5]+sum[6]));
+
+        pieChartActivity(sum);
+
+        barChartActivity(sum);
+
+        Button btn = findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AccountList.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void pieChartActivity(float[] sum) {
@@ -95,15 +132,32 @@ public class MainActivity extends AppCompatActivity {
         mPieChart.setRotationEnabled(true);
         mPieChart.setHighlightPerTapEnabled(true);
 
-//        // 添加一个选择监听器
-//        mPieChart.setOnChartValueSelectedListener(this);
+        //添加一个选择监听器
+        mPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                Intent intent =  new Intent(MainActivity.this,AccountList.class);
+                intent.putExtra("sort",(int)h.getX());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
         List<String> sorts =new ArrayList<>
                 (Arrays.asList("交通出行", "服饰美容", "生活日用", "通讯", "饮食", "其他"));
         for (int i = 1; i < 7; i++){
-            entries.add(new PieEntry(sum[i], sorts.get(i-1)));
+            if (sum[i] != 0){
+                entries.add(new PieEntry(sum[i], sorts.get(i-1)));
+            }
         }
 
         //设置数据
