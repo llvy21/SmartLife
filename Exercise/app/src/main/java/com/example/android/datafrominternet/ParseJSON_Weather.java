@@ -16,7 +16,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by ucla on 2018/2/1.
  */
 
-public class ParseJSON extends Throwable {
+public class ParseJSON_Weather extends Throwable {
 
     public static HashMap<String,String> parseJson(String data)throws JSONException {
 

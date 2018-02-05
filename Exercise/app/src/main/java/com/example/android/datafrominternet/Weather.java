@@ -4,17 +4,25 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
-import com.example.android.datafrominternet.utilities.NetworkUtils;
+import com.bumptech.glide.Glide;
+import com.example.android.datafrominternet.utilities.NetworkUtil_Weather;
 import org.json.JSONException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,32 +30,43 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class Weather extends AppCompatActivity {
 
     private EditText mSearchBoxEditText;
 
-    private TextView mUrlDisplayTextView;
+    private TextView textView;
 
     private TextView mSearchResultsTextView;
 
-    private ImageView mWeatherIcon;
+    private ImageView mWeatherIcon,mBackGround;
+
+    private SearchView searchView;
+
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        setContentView(R.layout.activity_weather);
 
         mSearchBoxEditText = (EditText) findViewById(R.id.et_search_box);
-        mUrlDisplayTextView = (TextView) findViewById(R.id.tv_url_display);
+        textView = (TextView) findViewById(R.id.textView);
         mSearchResultsTextView = (TextView) findViewById(R.id.tv_weather_search_results_json);
-        mWeatherIcon = (ImageView) findViewById(R.id.imageView);
+        mWeatherIcon = (ImageView) findViewById(R.id.iv_icon_weather);
+        mBackGround = (ImageView) findViewById(R.id.iv_background_weather);
+
+        android.support.v7.widget.Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        Glide.with(this).load("http://api.dujin.org/bing/1366.php").centerCrop().into(mBackGround);
 
     }
 
     private void makeWeatherSeachQuery(){
         String cityQuery = mSearchBoxEditText.getText().toString();
-        URL weatherSearchUrl = NetworkUtils.buildUrl(cityQuery);
-        mUrlDisplayTextView.setText(weatherSearchUrl.toString());
+        URL weatherSearchUrl = NetworkUtil_Weather.buildUrl(cityQuery);
         new WeatherQueryTask().execute(weatherSearchUrl);
         new ShowIconTask().execute();
 
@@ -56,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        searchView = (SearchView) findViewById(R.id.action_search);
         return true;
     }
 
@@ -75,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             URL searchUrl = params[0];
             String weatherSearchResults = null;
             try {
-                weatherSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                weatherSearchResults = NetworkUtil_Weather.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -87,9 +107,9 @@ public class MainActivity extends AppCompatActivity {
             HashMap<String,String> weatherdata = new HashMap<>();
             if(data != null && !data.equals(""))
                 try {
-                    weatherdata = ParseJSON.parseJson(data);
+                    weatherdata = ParseJSON_Weather.parseJson(data);
                     if (weatherdata.get("status").equals("unknown city")){
-                        Toast.makeText(MainActivity.this,"请重新输入城市",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Weather.this,"请重新输入城市",Toast.LENGTH_SHORT).show();
                         return;
                     }
                     SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
@@ -105,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class ShowIconTask extends AsyncTask<URL, Void, Bitmap> {
+
         @Override
         protected Bitmap doInBackground(URL... params) {
             Bitmap bitmap = null;
@@ -141,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
+
 
 
 }
