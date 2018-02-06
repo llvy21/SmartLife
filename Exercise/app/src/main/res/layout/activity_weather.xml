@@ -1,72 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<FrameLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="#00000000"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+
+    <ImageView
+        android:id="@+id/iv_background_weather"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        xmlns:android="http://schemas.android.com/apk/res/android" />
+        android:background="#00000000"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize" />
 
-    <FrameLayout android:id="@+id/fl_weather"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <ImageView
-            android:id="@+id/iv_background_weather"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-
-        <ScrollView
+        <FrameLayout
+            android:id="@+id/fl_weather"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:layout_marginTop="80dp">
 
-                <EditText
-                    android:id="@+id/et_search_box"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter a query, then click Search"
-                    android:textSize="22sp" />
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv_icon_weather"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
-                <TextView
-                    android:id="@+id/tv_weather_search_results_json"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Make a search!"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </FrameLayout>
+                    <EditText
+                        android:id="@+id/et_search_box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Enter a query, then click Search"
+                        android:textSize="22sp" />
 
 
+                    <ImageView
+                        android:id="@+id/iv_icon_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-</LinearLayout>
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@android:color/white"
+                        android:text="TextView" />
+
+                    <TextView
+                        android:id="@+id/tv_weather_search_results_json"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Make a search!"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+
+
+        </FrameLayout>
+
+</FrameLayout>
+
+

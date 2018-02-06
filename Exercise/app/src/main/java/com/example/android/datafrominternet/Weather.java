@@ -1,11 +1,13 @@
 package com.example.android.datafrominternet;
 
+import android.app.SearchManager;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -20,7 +22,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
-
 import com.bumptech.glide.Glide;
 import com.example.android.datafrominternet.utilities.NetworkUtil_Weather;
 import org.json.JSONException;
@@ -40,10 +41,6 @@ public class Weather extends AppCompatActivity {
 
     private ImageView mWeatherIcon,mBackGround;
 
-    private SearchView searchView;
-
-    private Toolbar toolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +54,21 @@ public class Weather extends AppCompatActivity {
         mWeatherIcon = (ImageView) findViewById(R.id.iv_icon_weather);
         mBackGround = (ImageView) findViewById(R.id.iv_background_weather);
 
-        android.support.v7.widget.Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+
+        android.support.v7.widget.Toolbar mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        mToolbar.setTitle("哈尔滨");
+        mToolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+
+
 
         Glide.with(this).load("http://api.dujin.org/bing/1366.php").centerCrop().into(mBackGround);
 
     }
 
-    private void makeWeatherSeachQuery(){
-        String cityQuery = mSearchBoxEditText.getText().toString();
+    private void makeWeatherSeachQuery(String query){
+        String cityQuery = query;
         URL weatherSearchUrl = NetworkUtil_Weather.buildUrl(cityQuery);
         new WeatherQueryTask().execute(weatherSearchUrl);
         new ShowIconTask().execute();
@@ -73,18 +76,34 @@ public class Weather extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        searchView = (SearchView) findViewById(R.id.action_search);
-        return true;
+    public boolean onCreateOptionsMenu( Menu menu) {
+        getMenuInflater().inflate( R.menu.main, menu);
+        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setSubmitButtonEnabled(true);//显示提交按钮
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                makeWeatherSeachQuery(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
-        if (itemThatWasClickedId == R.id.action_search) {
-            makeWeatherSeachQuery();
-            return true;
+
+
+        if (itemThatWasClickedId == R.id.app_bar_search) {
+
         }
         return super.onOptionsItemSelected(item);
     }
