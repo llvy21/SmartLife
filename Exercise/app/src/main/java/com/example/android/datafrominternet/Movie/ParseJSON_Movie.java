@@ -1,14 +1,12 @@
-package com.example.android.datafrominternet;
+package com.example.android.datafrominternet.Movie;
 
+import android.accounts.NetworkErrorException;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ucla on 2018/2/5.
@@ -17,13 +15,19 @@ import java.util.List;
 public class ParseJSON_Movie extends Throwable {
 
 
-    public static ArrayList<MovieData> parseMovieData (String data) throws JSONException{
+    public static ArrayList<MovieData> parseMovieData (String data) throws JSONException, NetworkErrorException{
 
         ArrayList<MovieData> movieDataArrayList = new ArrayList<MovieData>();
 
         for (int i = 0; i < 7; i++){
 
             JSONObject movieSearchResult = new JSONObject(data);
+
+            String status = movieSearchResult.getString("status");
+            if (status.equals("500")) {
+                throw new NetworkErrorException();
+            }
+
             JSONObject movies = (JSONObject) movieSearchResult.getJSONObject("data").getJSONArray("movies").get(i);
 
             String name = movies.getString("nm");

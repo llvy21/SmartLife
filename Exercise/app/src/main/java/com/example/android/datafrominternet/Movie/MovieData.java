@@ -1,4 +1,4 @@
-package com.example.android.datafrominternet;
+package com.example.android.datafrominternet.Movie;
 
 /**
  * Created by ucla on 2018/2/5.

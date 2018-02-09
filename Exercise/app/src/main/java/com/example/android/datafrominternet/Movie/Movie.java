@@ -1,6 +1,6 @@
-package com.example.android.datafrominternet;
+package com.example.android.datafrominternet.Movie;
 
-import android.content.SharedPreferences;
+import android.accounts.NetworkErrorException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.datafrominternet.R;
 import com.example.android.datafrominternet.utilities.NetWorkUtil_Movie;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by ucla on 2018/2/4.
@@ -74,11 +73,8 @@ public class Movie extends AppCompatActivity {
             ArrayList<MovieData> parsedData= new ArrayList<MovieData>();
             if(data != null && !data.equals(""))
                 try {
+                Log.e("test","data"+data);
                     parsedData = ParseJSON_Movie.parseMovieData(data);
-                    if (!new JSONObject(data).getString("status").equals("0")){
-                        Toast.makeText(Movie.this,"状态错误 请稍后重试",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                     URL[] urls = new URL[7];
                     for (int i = 0; i < 7; i++){
                         urls[i] = new URL(parsedData.get(i).getImg_url());
@@ -88,6 +84,10 @@ public class Movie extends AppCompatActivity {
                     e.printStackTrace();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
+                } catch (NetworkErrorException e) {
+                    Toast.makeText(Movie.this,"网络错误 请稍后重试",Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                    return;
                 }
             cast_tv.setText(parsedData.get(0).getCast());
             remark_tv.setText(parsedData.get(0).getRemark());
