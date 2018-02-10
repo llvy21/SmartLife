@@ -16,6 +16,7 @@ buildscript {
     }
 }
 
+
 allprojects {
     String osName = System.getProperty("os.name").toLowerCase();
     if (osName.contains("windows")) {
@@ -32,4 +33,20 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url "https://raw.github.com/bmob/bmob-android-sdk/master" }
+    }
 }

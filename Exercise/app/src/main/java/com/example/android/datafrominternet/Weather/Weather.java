@@ -80,7 +80,7 @@ public class Weather extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu( Menu menu) {
 
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_notebook, menu);
         MenuItem searchItem = menu.findItem(R.id.app_bar_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSubmitButtonEnabled(true);
