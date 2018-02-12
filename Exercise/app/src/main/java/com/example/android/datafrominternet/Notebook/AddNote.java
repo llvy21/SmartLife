@@ -87,7 +87,7 @@ public class AddNote extends AppCompatActivity {
                     NoteData update_bmob = new NoteData();
                     update_bmob.setTitle(title.getText().toString());
                     update_bmob.setContent(content.getText().toString());
-                    if (update_find.get(i).getObjectId().equals(null)){
+                    if (update_find.get(i).getObjectId()==null){
                         update_bmob.save(new SaveListener<String>() {
                             @Override
                             public void done(String s, BmobException e) {
@@ -98,7 +98,7 @@ public class AddNote extends AppCompatActivity {
                         update_bmob.update(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
-                                if (!(e.equals(null))){
+                                if (e!=null){
                                     Toast.makeText(AddNote.this,"同步修改数据失败",Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -131,7 +131,7 @@ public class AddNote extends AppCompatActivity {
                         delete.delete(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
-                                if (!(e.equals(null))) {
+                                if (e!=null) {
                                     Toast.makeText(AddNote.this, "同步修改数据失败", Toast.LENGTH_SHORT).show();
                                 }
                             }

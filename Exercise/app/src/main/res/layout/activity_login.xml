@@ -9,15 +9,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <!-- Login progress -->
-    <ProgressBar
-        android:id="@+id/login_progress"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
-
     <LinearLayout
         android:orientation="vertical"
         android:id="@+id/login_form"
@@ -36,7 +27,7 @@
 
 
                 <EditText
-                    android:id="@+id/et_phonenumber"
+                    android:id="@+id/et_l_phonenumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -52,7 +43,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/et_password"
+                    android:id="@+id/et_l_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Password"
@@ -66,7 +57,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/btn_sign_in"
+                android:id="@+id/btn_l_log_in"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,7 +66,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btn_sign_up"
+                android:id="@+id/btn_l_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
