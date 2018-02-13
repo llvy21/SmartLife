@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,8 +13,12 @@ import com.example.android.datafrominternet.R;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -21,14 +26,21 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.RadarDataSet;
+import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.litepal.crud.DataSupport;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,26 +51,19 @@ public class Chart extends AppCompatActivity {
 
     private BarChart mBarChart;
 
+    private RadarChart mRadarChart;
+
     private XAxis xAxis;
 
     private TextView textView;
+
+    List<String> sorts =new ArrayList<>
+            (Arrays.asList("交通出行", "服饰美容", "生活日用", "通讯", "饮食", "其他"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
-
-        List<AccountData> data = DataSupport.findAll(AccountData.class);
-        float[] sum = new float[7];
-        for (AccountData i : data){
-            sum[i.getSort()+1]+=i.getMoney();
-        }
-        textView= (TextView) findViewById(R.id.tv_sumup);
-        textView.setText("Income_sum:"+sum[0]+",outcome_sum"+(sum[1]+sum[2]+sum[3]+sum[4]+sum[5]+sum[6]));
-
-        pieChartActivity(sum);
-
-        barChartActivity(sum);
 
         Button btn = (Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -73,30 +78,27 @@ public class Chart extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        setContentView(R.layout.activity_chart);
 
         List<AccountData> data = DataSupport.findAll(AccountData.class);
         float[] sum = new float[7];
+        float outcome = 1;
         for (AccountData i : data){
             sum[i.getSort()+1]+=i.getMoney();
+            if(outcome==1){
+                outcome--;
+                continue;
+            }
+            outcome+=i.getMoney();
         }
         textView= (TextView) findViewById(R.id.tv_sumup);
-        textView.setText("Income_sum:"+sum[0]+",outcome_sum"+(sum[1]+sum[2]+sum[3]+sum[4]+sum[5]+sum[6]));
+        textView.setText("Income_sum:"+sum[0]+",outcome_sum"+outcome);
 
         pieChartActivity(sum);
-
         barChartActivity(sum);
-
-        Button btn = (Button) findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Chart.this,AccountList.class);
-                startActivity(intent);
-            }
-        });
+        radarChartActivity(sum);
 
     }
+
 
     private void pieChartActivity(float[] sum) {
 
@@ -146,8 +148,6 @@ public class Chart extends AppCompatActivity {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        List<String> sorts =new ArrayList<>
-                (Arrays.asList("交通出行", "服饰美容", "生活日用", "通讯", "饮食", "其他"));
         for (int i = 1; i < 7; i++){
             if (sum[i] != 0){
                 entries.add(new PieEntry(sum[i], sorts.get(i-1)));
@@ -155,7 +155,7 @@ public class Chart extends AppCompatActivity {
         }
 
         //设置数据
-        setData(entries);
+        setPieChartData(entries);
 
 
         //默认动画
@@ -181,6 +181,8 @@ public class Chart extends AppCompatActivity {
 
         xAxis = mBarChart.getXAxis();
         xAxis.setDrawGridLines(false);
+        String[] emm = {"交通出行", "服饰美容", "生活日用", "通讯", "饮食", "其他"," w"};
+        xAxis.setValueFormatter(new XFormattedValue(emm));
 
         mBarChart.getAxisLeft().setDrawGridLines(false);
         mBarChart.animateY(2500);
@@ -188,7 +190,7 @@ public class Chart extends AppCompatActivity {
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < sorts.size(); i++) {
             yVals1.add(new BarEntry(i, sum[i+1]));
         }
 
@@ -230,7 +232,7 @@ public class Chart extends AppCompatActivity {
 //        return s;
 //    }
 
-    private void setData(ArrayList<PieEntry> entries) {
+    private void setPieChartData(ArrayList<PieEntry> entries) {
         PieDataSet dataSet = new PieDataSet(entries, "Account");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
@@ -252,5 +254,97 @@ public class Chart extends AppCompatActivity {
 
         mPieChart.invalidate();
     }
+
+    private void radarChartActivity(float[] sum){
+
+        mRadarChart = (RadarChart) findViewById(R.id.mRadarChart);
+
+        Description description = new Description();
+        description.setText("(*´◡`*)");
+        description.setTextSize(15f);
+        description.setTextColor(Color.DKGRAY);
+        mRadarChart.setDescription(description);
+        // 绘制线条宽度，圆形向外辐射的线条
+        mRadarChart.setWebLineWidth(1.5f);
+        // 内部线条宽度，外面的环状线条
+        mRadarChart.setWebLineWidthInner(1.0f);
+        // 所有线条WebLine透明度
+        mRadarChart.setWebAlpha(100);
+
+        mRadarChart.getYAxis().setEnabled(false);
+
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+
+        setRadarChartData(sum);
+
+        XAxis xAxis = mRadarChart.getXAxis();
+        // X坐标值字体大小
+        xAxis.setTextSize(12f);
+
+        xAxis.setTextColor(Color.DKGRAY);
+
+        String[] emm = {"交通出行", "服饰美容", "生活日用", "通讯", "饮食", "其他"," w"};
+        xAxis.setValueFormatter(new XFormattedValue(emm));
+
+        YAxis yAxis = mRadarChart.getYAxis();
+        // Y坐标值标签个数
+        yAxis.setLabelCount(6, true);
+        // Y坐标值字体大小
+        yAxis.setTextSize(15f);
+
+        Legend l = mRadarChart.getLegend();
+        // 图例位置
+        l.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+        // 图例字体样式
+        // 图例X间距
+        l.setXEntrySpace(2f);
+        // 图例Y间距
+        l.setYEntrySpace(1f);
+
+
+    }
+
+    public void setRadarChartData(float[] sum) {
+
+        ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
+
+        for (int i = 0; i < sorts.size(); i++) {
+            entries1.add(new RadarEntry(sum[i+1],i));
+            Log.d("test",sum[i+1]+" "+sorts.get(i));
+        }
+
+        RadarDataSet set1 = new RadarDataSet(entries1, "Yours");
+
+        set1.setColor(ColorTemplate.VORDIPLOM_COLORS[1]);
+        // 是否实心填充区域
+        set1.setDrawFilled(true);
+
+        set1.setFillColor(ColorTemplate.VORDIPLOM_COLORS[1]);
+        // 数据线条宽度
+        set1.setLineWidth(2f);
+
+//        RadarDataSet set2 = new RadarDataSet(yVals2, "Set 2");
+//        set2.setColor(ColorTemplate.VORDIPLOM_COLORS[4]);
+//        set2.setDrawFilled(true);
+//        set2.setLineWidth(2f);
+
+
+        ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
+        sets.add(set1);
+//        sets.add(set2);
+
+        RadarData data = new RadarData(sets);
+
+        data.setDrawValues(false);
+
+        mRadarChart.setData(data);
+
+        mRadarChart.invalidate();
+
+
+}
+
+
 
 }

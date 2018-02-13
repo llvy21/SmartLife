@@ -48,6 +48,20 @@
                     android:padding="18dp"
                     android:orientation="vertical">
 
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="right">
+
+                        <TextView
+                            android:id="@+id/tv_temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="35dp"/>
+
+                    </RelativeLayout>
+
                     <ImageView
                         android:id="@+id/iv_icon_weather"
                         android:layout_width="wrap_content"

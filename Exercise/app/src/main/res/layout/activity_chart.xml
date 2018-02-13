@@ -38,6 +38,14 @@
 
         </com.github.mikephil.charting.charts.BarChart>
 
+        <com.github.mikephil.charting.charts.RadarChart
+            android:id="@+id/mRadarChart"
+            android:layout_width="match_parent"
+            android:layout_height="430dp"
+            android:layout_margin="30dp"
+            android:layout_weight="1">
+        </com.github.mikephil.charting.charts.RadarChart>
+
     </LinearLayout>
 </ScrollView>
 

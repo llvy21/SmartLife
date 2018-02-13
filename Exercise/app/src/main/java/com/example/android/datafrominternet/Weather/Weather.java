@@ -31,7 +31,7 @@ import java.util.HashMap;
 
 public class Weather extends AppCompatActivity {
 
-    private TextView textView;
+    private TextView textView,now;
 
     private TextView mSearchResultsTextView,tv_location;
 
@@ -45,6 +45,7 @@ public class Weather extends AppCompatActivity {
         setContentView(R.layout.activity_weather);
 
         textView = (TextView) findViewById(R.id.textView);
+        now = (TextView) findViewById(R.id.tv_temperature);
         mSearchResultsTextView = (TextView) findViewById(R.id.tv_weather_search_results_json);
         mWeatherIcon = (ImageView) findViewById(R.id.iv_icon_weather);
         mBackGround = (ImageView) findViewById(R.id.iv_background_weather);
@@ -67,6 +68,7 @@ public class Weather extends AppCompatActivity {
         mToolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
         Glide.with(this).load("http://api.dujin.org/bing/1366.php").centerCrop().into(mBackGround);
+
 
     }
 
@@ -158,6 +160,7 @@ public class Weather extends AppCompatActivity {
             mSearchResultsTextView.setText(weatherdata.toString()+airdata.toString());
             tv_location.setText(weatherdata.get("location"));
             tv_location.setVisibility(View.VISIBLE);
+            now.setText(weatherdata.get("tmp")+"\n"+weatherdata.get("cond_txt"));
             super.onPostExecute(data);
         }
     }
