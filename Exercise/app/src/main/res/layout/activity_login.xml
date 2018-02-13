@@ -74,6 +74,13 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/pgb_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
 
     </LinearLayout>
 </LinearLayout>

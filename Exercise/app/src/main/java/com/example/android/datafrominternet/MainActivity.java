@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.android.datafrominternet.Account.Chart;
 import com.example.android.datafrominternet.Movie.Movie;
 import com.example.android.datafrominternet.Notebook.NoteBook;
 import com.example.android.datafrominternet.Weather.Weather;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         btn2 = (Button) findViewById(R.id.button2);
         btn3 = (Button) findViewById(R.id.button3);
         btn4 = (Button) findViewById(R.id.button4);
+        btn5 = (Button) findViewById(R.id.button5);
 
 
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +62,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Movie.class);
+                startActivity(intent);
+            }
+        });
+
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Chart.class);
                 startActivity(intent);
             }
         });

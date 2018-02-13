@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_income"
+        android:icon="@drawable/bmob_update_btn_check_off_focused_holo_light"
+        android:title="income"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_outcome"
+        android:icon="@drawable/bmob_update_btn_check_off_holo_light"
+        android:title="outcome"
+        app:showAsAction="always" />
+
+</menu>

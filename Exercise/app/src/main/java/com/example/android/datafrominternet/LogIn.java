@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
@@ -22,13 +23,16 @@ import cn.bmob.v3.listener.LogInListener;
 
 public class LogIn extends AppCompatActivity {
 
-    Button logIn,signUp,autoLogIn;
+    Button logIn,signUp;
     EditText phonenumber,password;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        progressBar = (ProgressBar) findViewById(R.id.pgb_login);
 
         Bmob.initialize(this, "c12ad56b69a6e30cb8cc89b566379d19");
 
@@ -37,6 +41,7 @@ public class LogIn extends AppCompatActivity {
         String number = preferences.getString("phonenumber",null);
         String psw = preferences.getString("password",null);
         if (username!=null){
+            progressBar.setVisibility(View.VISIBLE);
             BmobUser.loginByAccount(number, psw, new LogInListener<BmobUser>() {
                 @Override
                 public void done(BmobUser bmobUser, BmobException e) {
@@ -47,6 +52,7 @@ public class LogIn extends AppCompatActivity {
                         finish();
                     }else {
                         Toast.makeText(LogIn.this, "自动登录失败", Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -60,6 +66,7 @@ public class LogIn extends AppCompatActivity {
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
                 BmobUser.loginByAccount(phonenumber.getText().toString(), password.getText().toString(), new LogInListener<BmobUser>() {
                     @Override
                     public void done(BmobUser bmobUser, BmobException e) {
@@ -68,10 +75,13 @@ public class LogIn extends AppCompatActivity {
                             Intent intent = new Intent(LogIn.this,MainActivity.class);
                             startActivity(intent);
                             finish();
-                        }else
-                        Log.d("test",e.toString());
+                        }else{
+                            Toast.makeText(LogIn.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            Log.d("test",e.toString());
+                        }
                     }
                 });
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 

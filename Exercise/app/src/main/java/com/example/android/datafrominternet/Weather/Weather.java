@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.android.datafrominternet.R;
@@ -49,8 +50,10 @@ public class Weather extends AppCompatActivity {
         mBackGround = (ImageView) findViewById(R.id.iv_background_weather);
         tv_location = (TextView) findViewById(R.id.tv_location_weather);
 
+
         android.support.v7.widget.Toolbar mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+
 
         SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
         String location = preferences.getString("location"," ");
@@ -80,8 +83,8 @@ public class Weather extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu( Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_notebook, menu);
-        MenuItem searchItem = menu.findItem(R.id.app_bar_search);
+        getMenuInflater().inflate(R.menu.menu_weather, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSubmitButtonEnabled(true);
 
