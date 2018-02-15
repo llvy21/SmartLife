@@ -9,7 +9,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -23,8 +28,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather"
         tools:replace="android:label">
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="Z8gNuOuy0dWGbmC6xNQrAFoKtQ2voAZW">
+
+        </meta-data>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service>
         <activity
-            android:name=".LogIn">
+            android:name=".LBS.Map">
             <intent-filter>
                 <action
                     android:name="android.intent.action.MAIN"/>
@@ -41,6 +56,8 @@
         <activity android:name=".Account.AccountList"/>
         <activity android:name=".Account.AddRecord"/>
         <activity android:name=".Account.Chart"/>
+        <!--<activity android:name=".LBS.Map"/>-->
+
     </application>
 
 </manifest>

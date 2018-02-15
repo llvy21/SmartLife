@@ -37,10 +37,9 @@ public class LogIn extends AppCompatActivity {
         Bmob.initialize(this, "c12ad56b69a6e30cb8cc89b566379d19");
 
         SharedPreferences preferences = getSharedPreferences("userinfo",MODE_PRIVATE);
-        String username = preferences.getString("username",null);
         String number = preferences.getString("phonenumber",null);
         String psw = preferences.getString("password",null);
-        if (username!=null){
+        if (number!=null){
             progressBar.setVisibility(View.VISIBLE);
             BmobUser.loginByAccount(number, psw, new LogInListener<BmobUser>() {
                 @Override
@@ -74,6 +73,10 @@ public class LogIn extends AppCompatActivity {
                             Toast.makeText(LogIn.this, "登录成功", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(LogIn.this,MainActivity.class);
                             startActivity(intent);
+                            SharedPreferences.Editor editor = getSharedPreferences("userinfo",MODE_PRIVATE).edit();
+                            editor.putString("password",password.getText().toString());
+                            editor.putString("phonenumber",phonenumber.getText().toString());
+                            editor.apply();
                             finish();
                         }else{
                             Toast.makeText(LogIn.this, e.toString(), Toast.LENGTH_SHORT).show();

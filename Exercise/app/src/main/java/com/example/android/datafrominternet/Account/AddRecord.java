@@ -58,7 +58,6 @@ public class AddRecord extends AppCompatActivity {
                 et_money = (EditText) findViewById(R.id.et_Money);
                 et_remark = (EditText) findViewById(R.id.et_Addremark);
                 AccountData accountData = new AccountData();
-                Log.d("test","wahat??");
                 if (status.equals("outcome")) {
                     accountData.setSort(spinner.getSelectedItemPosition());
                     accountData.setSortString(spinner.getSelectedItem().toString());

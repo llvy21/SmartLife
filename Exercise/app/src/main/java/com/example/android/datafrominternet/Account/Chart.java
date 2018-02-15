@@ -342,7 +342,6 @@ public class Chart extends AppCompatActivity {
 
         mRadarChart.invalidate();
 
-
 }
 
 
