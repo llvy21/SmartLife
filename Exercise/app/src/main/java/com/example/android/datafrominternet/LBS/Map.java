@@ -22,8 +22,11 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.example.android.datafrominternet.Notebook.AddNote;
 import com.example.android.datafrominternet.Notebook.NoteData;
@@ -54,6 +57,8 @@ public class Map extends AppCompatActivity {
     private MapView mapView;
 
     private BaiduMap baiduMap;
+
+    private Boolean isFirstLoc = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,12 +167,16 @@ public class Map extends AppCompatActivity {
             final double Lon = location.getLongitude();
             final LatLng ll = new LatLng(Lat,Lon);
 
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
-                    MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(ll,18f);
-                    baiduMap.animateMapStatus(update);
+                    if(isFirstLoc){
+                        MapStatusUpdate update = MapStatusUpdateFactory.newLatLngZoom(ll,18f);
+                        baiduMap.animateMapStatus(update);
+                        isFirstLoc = false;
+                    }
 
                     setMyLocation(Lon, Lat);
                     BmobGeoPoint point = new BmobGeoPoint(Lon, Lat);
@@ -204,6 +213,7 @@ public class Map extends AppCompatActivity {
                     update(objectId,point,number,username);
                     Log.i("bmob",objectId+"haha");
                 }else{
+                    save(point,number,username);
                     Log.i("bmob","失败："+e.getMessage()+"\n"+e.getErrorCode());
                 }
             }
@@ -228,29 +238,27 @@ public class Map extends AppCompatActivity {
         });
     }
 
-    private void setOthersLocation(BmobGeoPoint point){
+    private void setOthersLocation(final BmobGeoPoint point){
         BmobQuery<LocationData> bmobQuery = new BmobQuery<LocationData>();
-        bmobQuery.addWhereWithinKilometers("gpsAdd",point,3.0);
+        bmobQuery.addWhereWithinKilometers("gpsAdd",point,3000.0);
         bmobQuery.setLimit(10);    //获取最接近用户地点的10条数据
         bmobQuery.findObjects(new FindListener<LocationData>() {
             @Override
             public void done(List<LocationData> object,BmobException e) {
                 if(e==null){
                     for(int i=0; i<object.size();i++) {
-                        MyLocationData.Builder builder = new MyLocationData.Builder();
-                        builder.latitude(object.get(i).getGpsAdd().getLatitude());
-                        builder.longitude(object.get(i).getGpsAdd().getLongitude());
-                        MyLocationData locationdata = builder.build();
-                        baiduMap.setMyLocationData(locationdata);
-                        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;//定位跟随态
-                        //int mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;   //默认为 LocationMode.NORMAL 普通态
-                        //int mCurrentMode = MyLocationConfiguration.LocationMode.COMPASS;  //定位罗盘态
-                        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
+                        double lat = object.get(i).getGpsAdd().getLatitude();
+                        double lon = object.get(i).getGpsAdd().getLongitude();
+                        addOverlay(lat, lon);
 
-                        MyLocationConfiguration config = new MyLocationConfiguration(
-                                mCurrentMode, true, mCurrentMarker,
-                                ColorTemplate.VORDIPLOM_COLORS[i%6],ColorTemplate.VORDIPLOM_COLORS[i%6]);
-                        baiduMap.setMyLocationConfiguration(config);
+//                        MyLocationConfiguration.LocationMode mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;//定位跟随态
+//                        //int mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;   //默认为 LocationMode.NORMAL 普通态
+//                        //int mCurrentMode = MyLocationConfiguration.LocationMode.COMPASS;  //定位罗盘态
+//                        BitmapDescriptor mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
+//                        MyLocationConfiguration config = new MyLocationConfiguration(
+//                                mCurrentMode, true, mCurrentMarker,
+//                                ColorTemplate.VORDIPLOM_COLORS[i%6],ColorTemplate.VORDIPLOM_COLORS[i%6]);
+//                        baiduMap.setMyLocationConfiguration(config);
                     }
 
                     Log.d("test","查询成功：共" + object.size() + "条数据。");
@@ -281,6 +289,19 @@ public class Map extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void addOverlay(double lat, double lon) {
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
+        LatLng latLng = new LatLng(lat, lon);
+        Marker marker;
+        OverlayOptions options;
+        options = new MarkerOptions()
+                .position(latLng)//设置位置
+                .icon(bitmap);//设置图标样式
+        //添加marker
+        marker = (Marker) baiduMap.addOverlay(options);
+        //使用marker携带info信息，当点击事件的时候可以通过marker获得info信息
     }
 
 }

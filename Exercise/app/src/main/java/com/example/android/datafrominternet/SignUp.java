@@ -97,12 +97,15 @@ public class SignUp extends AppCompatActivity {
                                         editor.putString("password",password.getText().toString());
                                         editor.putString("phonenumber",phonenumber.getText().toString());
                                         editor.apply();
-                                    }else if (e.getErrorCode()==202){
+                                        Intent intent = new Intent(SignUp.this,MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                    else if (e.getErrorCode()==202){
                                         Toast.makeText(SignUp.this, "用户名已存在", Toast.LENGTH_SHORT).show();
-
-                                    }else if (e.getErrorCode()==209){
+                                    }
+                                    else if (e.getErrorCode()==209){
                                         Toast.makeText(SignUp.this, "手机号已注册", Toast.LENGTH_SHORT).show();
-
                                     }
                                     else {
                                         Log.d("test",e.toString());
@@ -110,12 +113,10 @@ public class SignUp extends AppCompatActivity {
                                     }
                                 }
                             });
-                            finish();
                         }
 
                         else {
                             Log.d("test",e.toString()+" ,code:"+code.getText().toString()+"PHONe:"+phonenumber.getText().toString());
-
                             Toast.makeText(SignUp.this,"验证码有误，请重试",Toast.LENGTH_SHORT).show();
                         }
 

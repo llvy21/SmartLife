@@ -23,8 +23,8 @@
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/icon9"
-        android:label=" "
+        android:icon="@drawable/ic_launcher"
+        android:label="SmartLife"
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather"
         tools:replace="android:label">
