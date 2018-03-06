@@ -21,8 +21,11 @@ import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.android.datafrominternet.R;
+import com.example.android.datafrominternet.utilities.NetWorkUtil_Background;
 import com.example.android.datafrominternet.utilities.NetworkUtil_Weather;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -57,8 +60,8 @@ public class Weather extends AppCompatActivity {
 
 
         SharedPreferences preferences = getSharedPreferences("data",MODE_PRIVATE);
-        String location = preferences.getString("location"," ");
-        if (location.equals(null)){
+        String location = preferences.getString("location","default");
+        if (location.equals("default")){
             tv_location.setText("哈尔滨");
             makeWeatherSeachQuery("haerbin");
         }else {
@@ -67,9 +70,7 @@ public class Weather extends AppCompatActivity {
         }
         mToolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
-        Glide.with(this).load("http://api.dujin.org/bing/1366.php").centerCrop().into(mBackGround);
-
-
+        makeBackgroundSeachQuery();
     }
 
     private void makeWeatherSeachQuery(String query){
@@ -83,7 +84,7 @@ public class Weather extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu( Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_weather, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
@@ -200,6 +201,43 @@ public class Weather extends AppCompatActivity {
             return bitmap;
         }
         return null;
+    }
+
+    private void makeBackgroundSeachQuery(){
+        URL backGroundSearchUrl = NetWorkUtil_Background.buildUrl();
+        new BackGroundQueryTask().execute(backGroundSearchUrl);
+        new ShowIconTask().execute();
+
+    }
+
+    public class BackGroundQueryTask extends AsyncTask<URL, Void, String> {
+        @Override
+        protected String doInBackground(URL... params) {
+            String searchResults = null;
+            try {
+                searchResults = NetWorkUtil_Background.getResponseFromHttpUrl(params[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return searchResults;
+        }
+
+        @Override
+        protected void onPostExecute(String json) {
+            String url = null;
+            if(json != null && !json.equals(""))
+                try {
+                    JSONObject urlSearchResult = new JSONObject(json);
+                    JSONObject temp = (JSONObject) urlSearchResult.getJSONArray("images").get(0);
+                    url = temp.getString("urlbase");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            Glide.with(Weather.this).load("http://s.cn.bing.net"+url+"_1024x768.jpg").centerCrop().into(mBackGround);
+
+            super.onPostExecute(json);
+        }
     }
 
 

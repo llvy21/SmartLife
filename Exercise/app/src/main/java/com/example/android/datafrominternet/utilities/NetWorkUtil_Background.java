@@ -2,7 +2,6 @@ package com.example.android.datafrominternet.utilities;
 
 import android.net.Uri;
 import android.util.Log;
-import android.widget.BaseAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,22 +10,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class NetworkUtil_Weather {
+/**
+ * Created by ucla on 2018/3/6.
+ */
 
-    final static String[] BASE_URL = {"https://free-api.heweather.com/s6/weather?"
-            ,"https://free-api.heweather.com/s6/air/now?"};
+public class NetWorkUtil_Background {
 
-    final static String PARAM_CITY = "location";
+    final static String BASE_URL = "http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
 
-    final static String KEY = "key";
-
-    final static String MYKEY = "4a88f102af9249a4b62391d50c633549";
-
-
-    public static URL buildUrl(String citySearchQuery,int i) {
-        Uri builtUri = Uri.parse(BASE_URL[i]).buildUpon()
-                .appendQueryParameter(PARAM_CITY,citySearchQuery)
-                .appendQueryParameter(KEY,MYKEY)
+    public static URL buildUrl() {
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .build();
 
         URL url = null;
@@ -57,4 +50,5 @@ public class NetworkUtil_Weather {
             urlConnection.disconnect();
         }
     }
+
 }

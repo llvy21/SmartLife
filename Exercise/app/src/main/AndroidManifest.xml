@@ -24,7 +24,7 @@
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="SmartLife"
+        android:label=" "
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather"
         tools:replace="android:label">
@@ -47,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Movie.Movie"/>
-        <activity android:name=".Weather.Weather"/>
+        <activity android:name=".Weather.Weather"></activity>
         <activity android:name=".Notebook.AddNote" />
         <activity android:name=".Notebook.NoteBook"/>
         <activity android:name=".Calendar.Calendar"/>
