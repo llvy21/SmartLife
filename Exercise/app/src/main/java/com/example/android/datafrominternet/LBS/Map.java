@@ -246,6 +246,7 @@ public class Map extends AppCompatActivity {
             @Override
             public void done(List<LocationData> object,BmobException e) {
                 if(e==null){
+                    baiduMap.clear();
                     for(int i=0; i<object.size();i++) {
                         double lat = object.get(i).getGpsAdd().getLatitude();
                         double lon = object.get(i).getGpsAdd().getLongitude();
