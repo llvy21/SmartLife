@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.android.datafrominternet.Account.Chart;
+import com.example.android.datafrominternet.HaveFun.MainInterface;
 import com.example.android.datafrominternet.LBS.Map;
 import com.example.android.datafrominternet.Movie.Movie;
 import com.example.android.datafrominternet.Notebook.NoteBook;
@@ -19,7 +20,7 @@ import com.example.android.datafrominternet.Weather.Weather;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn1,btn2,btn3,btn4,btn5,btn6;
+    Button btn1,btn2,btn3,btn4,btn5,btn6,btn7;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btn4 = (Button) findViewById(R.id.button4);
         btn5 = (Button) findViewById(R.id.button5);
         btn6 = (Button) findViewById(R.id.button6);
+        btn7 = (Button) findViewById(R.id.button7);
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +78,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, Map.class);
+                startActivity(intent);
+            }
+        });
+
+        btn7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainInterface.class);
                 startActivity(intent);
             }
         });

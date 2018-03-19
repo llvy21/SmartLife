@@ -105,7 +105,6 @@ public class Weather extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 tv_location.setVisibility(View.GONE);
-
                 return true;
             }
 
@@ -234,7 +233,7 @@ public class Weather extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            Glide.with(Weather.this).load("http://s.cn.bing.net"+url+"_1024x768.jpg").centerCrop().into(mBackGround);
+            Glide.with(Weather.this).load("http://s.cn.bing.net"+url+"_720x1280.jpg").centerCrop().into(mBackGround);
 
             super.onPostExecute(json);
         }

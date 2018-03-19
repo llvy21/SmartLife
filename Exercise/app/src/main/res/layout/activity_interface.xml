@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/interface_imageView"
+        android:layout_width="395dp"
+        android:layout_height="342dp"
+        app:srcCompat="?android:attr/textSelectHandle" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingButton_emojify"
+        android:layout_width="84dp"
+        android:layout_height="69dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/bmob_update_btn_check_on_holo_light" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingButton_camera"
+        android:layout_width="78dp"
+        android:layout_height="68dp"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingButton_delete"
+        android:layout_width="95dp"
+        android:layout_height="67dp"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+</LinearLayout>
