@@ -15,6 +15,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.CoordType;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -28,6 +29,16 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.trace.LBSTraceClient;
+import com.baidu.trace.api.fence.CreateFenceRequest;
+import com.baidu.trace.api.fence.CreateFenceResponse;
+import com.baidu.trace.api.fence.DeleteFenceResponse;
+import com.baidu.trace.api.fence.FenceListResponse;
+import com.baidu.trace.api.fence.HistoryAlarmResponse;
+import com.baidu.trace.api.fence.MonitoredStatusByLocationResponse;
+import com.baidu.trace.api.fence.MonitoredStatusResponse;
+import com.baidu.trace.api.fence.OnFenceListener;
+import com.baidu.trace.api.fence.UpdateFenceResponse;
 import com.example.android.datafrominternet.Notebook.AddNote;
 import com.example.android.datafrominternet.Notebook.NoteData;
 import com.example.android.datafrominternet.R;
@@ -202,7 +213,7 @@ public class Map extends AppCompatActivity {
         final String username = preferences.getString("username",null);
         final String number = preferences.getString("phonenumber",null);
 
-        BmobQuery<LocationData> query = new BmobQuery<LocationData>();
+        BmobQuery<LocationData> query = new BmobQuery<>();
         query.addWhereEqualTo("phoneNumber", number);
         query.setLimit(1);
         query.findObjects(new FindListener<LocationData>() {
@@ -218,6 +229,9 @@ public class Map extends AppCompatActivity {
                 }
             }
         });
+
+
+
 
     }
 
@@ -239,7 +253,7 @@ public class Map extends AppCompatActivity {
     }
 
     private void setOthersLocation(final BmobGeoPoint point){
-        BmobQuery<LocationData> bmobQuery = new BmobQuery<LocationData>();
+        BmobQuery<LocationData> bmobQuery = new BmobQuery<>();
         bmobQuery.addWhereWithinKilometers("gpsAdd",point,3000.0);
         bmobQuery.setLimit(10);    //获取最接近用户地点的10条数据
         bmobQuery.findObjects(new FindListener<LocationData>() {
@@ -304,6 +318,61 @@ public class Map extends AppCompatActivity {
         marker = (Marker) baiduMap.addOverlay(options);
         //使用marker携带info信息，当点击事件的时候可以通过marker获得info信息
     }
+
+    private void createFence() {
+        // 请求标识
+        int tag = 11;
+        // 轨迹服务ID
+        long serviceId = 0;
+        // 围栏名称
+        String fenceName = "hit-library";
+        // 监控对象
+        String monitoredPerson = "myTrace";
+        // 多边形顶点集
+        List<com.baidu.trace.model.LatLng> vertexes = new ArrayList<>();
+        com.baidu.trace.model.LatLng ll = new com.baidu.trace.model.LatLng(23,234);
+        vertexes.add(ll);
+        // 去噪精度
+        int denoise = 100;
+        // 坐标类型
+        com.baidu.trace.model.CoordType coordType = com.baidu.trace.model.CoordType.bd09ll;
+
+        // 创建服务端多边形围栏请求实例
+        CreateFenceRequest request = CreateFenceRequest.buildServerPolygonRequest(tag,
+                serviceId, fenceName, monitoredPerson, vertexes, denoise, coordType);
+
+        // 初始化围栏监听器
+        // 初始化围栏监听器
+        OnFenceListener mFenceListener = new OnFenceListener() {
+            // 创建围栏回调
+            @Override
+            public void onCreateFenceCallback(CreateFenceResponse response) {}
+            // 更新围栏回调
+            @Override
+            public void onUpdateFenceCallback(UpdateFenceResponse response) {}
+            // 删除围栏回调
+            @Override
+            public void onDeleteFenceCallback(DeleteFenceResponse response) {}
+            // 围栏列表回调
+            @Override
+            public void onFenceListCallback(FenceListResponse response) {}
+            // 监控状态回调
+            @Override
+            public void onMonitoredStatusCallback(MonitoredStatusResponse
+                                                          response) {}
+            // 指定位置监控状态回调
+            @Override
+            public void onMonitoredStatusByLocationCallback(MonitoredStatusByLocationResponse response) {}
+            // 历史报警回调
+            @Override
+            public void onHistoryAlarmCallback(HistoryAlarmResponse response) {}
+        };
+
+        // 创建服务端多边形围栏
+        LBSTraceClient mTraceClient = new LBSTraceClient(getApplicationContext());
+        mTraceClient.createFence(request, mFenceListener);
+    }
+
 
 }
 
