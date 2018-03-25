@@ -35,6 +35,7 @@ import com.baidu.trace.api.fence.CreateFenceResponse;
 import com.baidu.trace.api.fence.DeleteFenceResponse;
 import com.baidu.trace.api.fence.FenceListResponse;
 import com.baidu.trace.api.fence.HistoryAlarmResponse;
+import com.baidu.trace.api.fence.MonitoredStatusByLocationRequest;
 import com.baidu.trace.api.fence.MonitoredStatusByLocationResponse;
 import com.baidu.trace.api.fence.MonitoredStatusResponse;
 import com.baidu.trace.api.fence.OnFenceListener;
@@ -190,6 +191,7 @@ public class Map extends AppCompatActivity {
                     }
 
                     setMyLocation(Lon, Lat);
+
                     BmobGeoPoint point = new BmobGeoPoint(Lon, Lat);
                     setBmobInfo(point);
                     setOthersLocation(point);
@@ -319,7 +321,7 @@ public class Map extends AppCompatActivity {
         //使用marker携带info信息，当点击事件的时候可以通过marker获得info信息
     }
 
-    private void createFence() {
+    private void createFence(double Lat, double Lon) {
         // 请求标识
         int tag = 11;
         // 轨迹服务ID
@@ -332,6 +334,7 @@ public class Map extends AppCompatActivity {
         List<com.baidu.trace.model.LatLng> vertexes = new ArrayList<>();
         com.baidu.trace.model.LatLng ll = new com.baidu.trace.model.LatLng(23,234);
         vertexes.add(ll);
+        //TODO : get vertexes of library
         // 去噪精度
         int denoise = 100;
         // 坐标类型
@@ -341,36 +344,42 @@ public class Map extends AppCompatActivity {
         CreateFenceRequest request = CreateFenceRequest.buildServerPolygonRequest(tag,
                 serviceId, fenceName, monitoredPerson, vertexes, denoise, coordType);
 
-        // 初始化围栏监听器
+        // 请求标识
+        int tag1 = 10;
+        // 围栏编号列表
+        List<Long> fenceIds = null;
+        // 位置坐标
+        com.baidu.trace.model.LatLng location = new com.baidu.trace.model.LatLng(Lon, Lat);
+
         // 初始化围栏监听器
         OnFenceListener mFenceListener = new OnFenceListener() {
-            // 创建围栏回调
             @Override
             public void onCreateFenceCallback(CreateFenceResponse response) {}
-            // 更新围栏回调
             @Override
             public void onUpdateFenceCallback(UpdateFenceResponse response) {}
-            // 删除围栏回调
             @Override
             public void onDeleteFenceCallback(DeleteFenceResponse response) {}
-            // 围栏列表回调
             @Override
             public void onFenceListCallback(FenceListResponse response) {}
-            // 监控状态回调
             @Override
             public void onMonitoredStatusCallback(MonitoredStatusResponse
                                                           response) {}
-            // 指定位置监控状态回调
             @Override
-            public void onMonitoredStatusByLocationCallback(MonitoredStatusByLocationResponse response) {}
-            // 历史报警回调
+            public void onMonitoredStatusByLocationCallback(MonitoredStatusByLocationResponse response) {
+                //TODO:
+            }
             @Override
             public void onHistoryAlarmCallback(HistoryAlarmResponse response) {}
         };
 
-        // 创建服务端多边形围栏
         LBSTraceClient mTraceClient = new LBSTraceClient(getApplicationContext());
         mTraceClient.createFence(request, mFenceListener);
+
+
+        // 创建查询服务端围栏指定位置上监控状态请求实例
+        MonitoredStatusByLocationRequest request1 = MonitoredStatusByLocationRequest.buildServerRequest(tag1,serviceId, monitoredPerson, fenceIds, location, coordType);
+        // 查询围栏监控者状态
+        mTraceClient.queryMonitoredStatusByLocation(request1, mFenceListener);
     }
 
 
