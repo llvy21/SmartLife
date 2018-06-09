@@ -37,13 +37,13 @@
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Z8gNuOuy0dWGbmC6xNQrAFoKtQ2voAZW">
         </meta-data>
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face" />
+
         <service
             android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote">
-        </service>
-        <service
-            android:name="com.baidu.trace.LBSTraceService"
             android:enabled="true"
             android:process=":remote">
         </service>
@@ -78,7 +78,6 @@
         <activity android:name=".Account.Chart"/>
         <activity android:name=".LBS.Map"/>
         <activity android:name=".HaveFun.MainInterface"/>
-
     </application>
 
 </manifest>

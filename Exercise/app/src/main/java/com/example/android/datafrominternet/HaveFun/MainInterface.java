@@ -14,6 +14,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,7 +35,7 @@ public class MainInterface extends AppCompatActivity{
     private static final String FILE_PROVIDER_AUTHORITY = "com.example.android.fileprovider";
 
     private ImageView imageView;
-    private FloatingActionButton camera, emojify, delete;
+    private Button camera, emojify;
 
     private String mTempPhotoPath;
 
@@ -45,9 +47,8 @@ public class MainInterface extends AppCompatActivity{
         setContentView(R.layout.activity_interface);
 
         imageView = (ImageView) findViewById(R.id.interface_imageView);
-        camera = (FloatingActionButton) findViewById(R.id.floatingButton_camera);
-        emojify = (FloatingActionButton) findViewById(R.id.floatingButton_emojify);
-        delete = (FloatingActionButton) findViewById(R.id.floatingButton_delete);
+        camera = (Button) findViewById(R.id.interface_btn_camera);
+        emojify = (Button) findViewById(R.id.interface_btn_emojify);
 
 
         if (ContextCompat.checkSelfPermission(this,
@@ -58,6 +59,24 @@ public class MainInterface extends AppCompatActivity{
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     REQUEST_STORAGE_PERMISSION);
         } else launchCamera();
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchCamera();
+            }
+        });
+
+        emojify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mResultsBitmap = BitmapUtils.resamplePic(MainInterface.this, mTempPhotoPath);
+
+                mResultsBitmap = Emojify.detectFaces(MainInterface.this, mResultsBitmap);
+
+                imageView.setImageBitmap(mResultsBitmap);
+            }
+        });
 
     }
 
@@ -82,26 +101,10 @@ public class MainInterface extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // If the image capture activity was called and was successful
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            // Process the image and set it to the TextView
             processAndSetImage();
-        } else {
-
-            // Otherwise, delete the temporary image file
-            BitmapUtils.deleteImageFile(this, mTempPhotoPath);
         }
     }
-
-    private void processAndSetImage() {
-        mResultsBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
-        imageView.setImageBitmap(mResultsBitmap);
-    }
-
-    private void deleteBitMap() {
-        BitmapUtils.deleteImageFile(this, mTempPhotoPath);
-    }
-
 
 
 
@@ -122,14 +125,22 @@ public class MainInterface extends AppCompatActivity{
 
                 Uri photoURI = FileProvider.getUriForFile(this, FILE_PROVIDER_AUTHORITY, photoFile);
 
-                // Add the URI so the camera can store the image
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
-                // Launch the camera activity
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
             }
         }
 
+    }
+
+    private void processAndSetImage() {
+
+        mResultsBitmap = BitmapUtils.resamplePic(this, mTempPhotoPath);
+
+        Emojify.detectFaces(this, mResultsBitmap);
+
+        imageView.setImageBitmap(mResultsBitmap);
     }
 
 

@@ -2,32 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <ImageView
+        android:layout_marginTop="70dp"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/interface_imageView"
-        android:layout_width="395dp"
+        android:layout_width="275dp"
         android:layout_height="342dp"
         app:srcCompat="?android:attr/textSelectHandle" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingButton_emojify"
-        android:layout_width="84dp"
-        android:layout_height="69dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/bmob_update_btn_check_on_holo_light" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingButton_camera"
-        android:layout_width="78dp"
-        android:layout_height="68dp"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        <Button
+            android:id="@+id/interface_btn_camera"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/camera" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingButton_delete"
-        android:layout_width="95dp"
-        android:layout_height="67dp"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        <Button
+            android:id="@+id/interface_btn_emojify"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/emojify" />
+
+
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

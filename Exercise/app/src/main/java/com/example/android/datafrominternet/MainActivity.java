@@ -20,7 +20,7 @@ import com.example.android.datafrominternet.Weather.Weather;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn1,btn2,btn3,btn4,btn5,btn6,btn7;
+    Button btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 }

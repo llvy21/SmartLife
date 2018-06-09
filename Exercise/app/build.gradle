@@ -26,9 +26,6 @@ android {
 dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     implementation files('libs/BaiduLBS_Android.jar')
-    implementation files('libs/BaiduTraceSDK_v3_0_7.jar')
-    implementation files('libs/okhttp-3.8.1.jar')
-    implementation files('libs/okio-1.13.0.jar')
 }
 
 dependencies {
@@ -59,7 +56,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile 'com.specyci:residemenu:1.6+'
     compile 'org.litepal.android:core:1.6.0'
     compile 'com.ericliu.asyncexpandablelist:asyncexpandablelist:1.1.0'
 
@@ -83,6 +79,6 @@ allprojects {
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services-vision:11.8.0'
+    compile 'com.google.android.gms:play-services-vision:10.2.0'
 }
 
