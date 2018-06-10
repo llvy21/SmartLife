@@ -1,0 +1,19 @@
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="100" android:drawable="@drawable/sunny" />
+    <item android:maxLevel="101" android:drawable="@drawable/cloudy" />
+    <item android:maxLevel="103" android:drawable="@drawable/sunny_cloud" />
+    <item android:maxLevel="209" android:drawable="@drawable/storm" />
+    <item android:maxLevel="302" android:drawable="@drawable/thunderstorm" />
+    <item android:maxLevel="307" android:drawable="@drawable/heavyrain" />
+    <item android:maxLevel="315" android:drawable="@drawable/littlerain" />
+    <item android:maxLevel="400" android:drawable="@drawable/littlesnow" />
+    <item android:maxLevel="402" android:drawable="@drawable/heavysnow" />
+    <item android:maxLevel="501" android:drawable="@drawable/foggy" />
+
+
+
+
+
+
+
+</level-list>

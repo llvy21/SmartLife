@@ -34,11 +34,13 @@ import java.util.HashMap;
 
 public class Weather extends AppCompatActivity {
 
-    private TextView textView,now;
+    private TextView textView,now_temp,date1,date2,temp_future1,temp_future2,temp_future3;
 
-    private TextView mSearchResultsTextView,tv_location;
+    private TextView air_quanlity,tv_location,dirc;
 
-    private ImageView mWeatherIcon,mBackGround;
+    private ImageView mWeatherIcon,mBackGround,weather1,weather2;
+    private int weather_code_int;
+    private String weather_code_str;
 
 
     @Override
@@ -47,12 +49,22 @@ public class Weather extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_weather);
 
-        textView = (TextView) findViewById(R.id.textView);
-        now = (TextView) findViewById(R.id.tv_temperature);
-        mSearchResultsTextView = (TextView) findViewById(R.id.tv_weather_search_results_json);
+        textView = (TextView) findViewById(R.id.testView);
+        now_temp = (TextView) findViewById(R.id.tv_temperature);
+        air_quanlity = (TextView) findViewById(R.id.air_quanlity);
+
         mWeatherIcon = (ImageView) findViewById(R.id.iv_icon_weather);
         mBackGround = (ImageView) findViewById(R.id.iv_background_weather);
+        weather1 = (ImageView) findViewById(R.id.weather1);
+        weather2 = (ImageView) findViewById(R.id.weather2);
+
         tv_location = (TextView) findViewById(R.id.tv_location_weather);
+        temp_future1 = (TextView) findViewById(R.id.temp_future1);
+        temp_future2 = (TextView) findViewById(R.id.temp_future2);
+        dirc = (TextView) findViewById(R.id.dirc);
+        date1 = (TextView) findViewById(R.id.date1);
+        date2 = (TextView) findViewById(R.id.date2);
+
 
 
         android.support.v7.widget.Toolbar mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
@@ -105,6 +117,7 @@ public class Weather extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 tv_location.setVisibility(View.GONE);
+
                 return true;
             }
 
@@ -157,10 +170,23 @@ public class Weather extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            mSearchResultsTextView.setText(weatherdata.toString()+airdata.toString());
+            air_quanlity.setText("        空气"+airdata.get("quality").toString()+"    PM10:"+airdata.get("aqi").toString()+"\n"+" "+"\n"+"    未来天气：");
             tv_location.setText(weatherdata.get("location"));
             tv_location.setVisibility(View.VISIBLE);
-            now.setText(weatherdata.get("tmp")+"\n"+weatherdata.get("cond_txt"));
+            now_temp.setText("     "+weatherdata.get("tmp")+"℃"+"    "+weatherdata.get("cond_txt"));
+            textView.setText("            今日温度："+weatherdata.get("tmp_min"+0).toString()+"℃---"+weatherdata.get("tmp_max"+0).toString()+"℃"+"\n"+" ");
+            date1.setText(weatherdata.get("date"+1).toString()) ;
+            temp_future1.setText(weatherdata.get("tmp_min"+1).toString()+"℃---"+weatherdata.get("tmp_max"+1).toString()+"℃  "+weatherdata.get("cond_txt"));
+            date2.setText(weatherdata.get("date"+2).toString()) ;
+            temp_future2.setText(weatherdata.get("tmp_min"+2).toString()+"℃---"+weatherdata.get("tmp_max"+2).toString()+"℃  "+weatherdata.get("cond_txt"));
+
+            dirc.setText("\n"+"风向："+weatherdata.get("wind_dir").toString()+"  风级："+weatherdata.get("wind_sc").toString()+"\n"+"\n"+weatherdata.get("txt"+0).toString());
+            /* if(Integer.parseInt(weatherdata.get("cond_code"))==100)
+             {
+                 weather1.setBackground(R.id.sunny);
+             }*/
+            weather1.getDrawable().setLevel(Integer.parseInt(weatherdata.get("cond_code_d"+1)));
+            weather2.getDrawable().setLevel(Integer.parseInt(weatherdata.get("cond_code_d"+2)));
             super.onPostExecute(data);
         }
     }
@@ -182,7 +208,10 @@ public class Weather extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            mWeatherIcon.setImageBitmap(bitmap);
+            // mWeatherIcon.setImageBitmap(bitmap);
+            // weather1.setImageBitmap(bitmap);
+            // weather2.setImageBitmap(bitmap);
+            //  weather3.setImageBitmap(bitmap);
             super.onPostExecute(bitmap);
         }
 
@@ -233,7 +262,7 @@ public class Weather extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            Glide.with(Weather.this).load("http://s.cn.bing.net"+url+"_720x1280.jpg").centerCrop().into(mBackGround);
+            Glide.with(Weather.this).load("http://s.cn.bing.net"+url+"_1024x768.jpg").centerCrop().into(mBackGround);
 
             super.onPostExecute(json);
         }

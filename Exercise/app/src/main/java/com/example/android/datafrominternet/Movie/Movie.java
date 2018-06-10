@@ -30,24 +30,28 @@ import java.util.ArrayList;
 
 public class Movie extends AppCompatActivity {
 
-    private ImageView post_imageView;
+    private ImageView movie;
 
-    private TextView cast_tv;
+    private TextView name,who,director;
 
-    private TextView movieName_tv;
+    private TextView kind,date,point;
 
-    private TextView remark_tv;
+    private TextView cinema;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        post_imageView = (ImageView) findViewById(R.id.iv_movie);
+        movie = (ImageView) findViewById(R.id.iv_movie);
 
-        cast_tv = (TextView) findViewById(R.id.tv_cast);
-        remark_tv = (TextView) findViewById(R.id.tv_remark);
-        movieName_tv = (TextView) findViewById(R.id.tv_name);
+        name = (TextView) findViewById(R.id.tv_name);
+        who = (TextView) findViewById(R.id.tv_who);
+        director = (TextView) findViewById(R.id.tv_director);
+        kind = (TextView) findViewById(R.id.tv_kind);
+        date = (TextView) findViewById(R.id.tv_date);
+        point = (TextView)findViewById(R.id.tv_point);
+        cinema = (TextView) findViewById(R.id.tv_cinema);
 
         makerMovieSeachQuery();
 
@@ -72,26 +76,31 @@ public class Movie extends AppCompatActivity {
         protected void onPostExecute(String data) {
             ArrayList<MovieData> parsedData= new ArrayList<MovieData>();
             if(data != null && !data.equals(""))
-                try {
-                Log.e("test","data"+data);
-                    parsedData = ParseJSON_Movie.parseMovieData(data);
-                    URL[] urls = new URL[7];
-                    for (int i = 0; i < 7; i++){
-                        urls[i] = new URL(parsedData.get(i).getImg_url());
-                    }
-                    new ShowPostTask().execute(urls);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (NetworkErrorException e) {
-                    Toast.makeText(Movie.this,"网络错误 请稍后重试",Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                    return;
+                Log.d("test","a2ondso2");
+            try {
+
+                parsedData = ParseJSON_Movie.parseMovieData(data);
+
+                Log.d("test","asdfasdfINle");
+                Log.d("test","Why Null");
+                URL[] urls = new URL[7];
+                for (int i = 0; i < 7; i++){
+                    urls[i] = new URL(parsedData.get(i).getImg_url());
                 }
-            cast_tv.setText(parsedData.get(0).getCast());
-            remark_tv.setText(parsedData.get(0).getRemark());
-            movieName_tv.setText(parsedData.get(0).getMovieName());
+                new ShowPostTask().execute(urls);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (NetworkErrorException e) {
+                Toast.makeText(Movie.this,"网络错误 请稍后重试",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                return;
+            }
+
+            director.setText(parsedData.get(0).getCast());
+            kind.setText(parsedData.get(0).getRemark());
+            name.setText(parsedData.get(0).getMovieName());
 
             super.onPostExecute(data);
         }
@@ -113,7 +122,7 @@ public class Movie extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            post_imageView.setImageBitmap(bitmap);
+            movie.setImageBitmap(bitmap);
             super.onPostExecute(bitmap);
         }
 

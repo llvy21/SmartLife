@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="18dp"
-
         android:visibility="visible">
+
+        <ImageView
+            android:layout_width="293dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/add_note" />
 
         <EditText
             android:id="@+id/title"
@@ -18,6 +23,8 @@
             android:ems="10"
             android:inputType="textMultiLine"
             android:textSize="25dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
             android:hint="Title" />
 
         <EditText
@@ -26,23 +33,35 @@
             android:layout_height="260dp"
             android:ems="10"
             android:gravity="top|center_vertical"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
             android:hint="Click here to put down your ideas"
             android:inputType="textMultiLine" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/save"
-                android:text="Save" />
+                android:layout_width="140dp"
+                android:layout_height="97dp"
+                android:layout_marginRight="15dp"
+
+                android:background="@drawable/note_btn"
+                android:text="增  加"
+                android:textSize="23dp"
+                android:textColor="@color/colorWhite" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Delete"
+                android:layout_width="140dp"
+                android:layout_height="97dp"
+                android:text="删  除"
+                android:textSize="23dp"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/note_btn"
                 android:id="@+id/delete"/>
 
         </LinearLayout>

@@ -28,7 +28,7 @@
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label=" "
         android:supportsRtl="true"
         android:theme="@style/Theme.Weather"

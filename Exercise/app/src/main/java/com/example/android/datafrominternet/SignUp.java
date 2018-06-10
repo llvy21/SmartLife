@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -33,6 +34,7 @@ public class SignUp extends AppCompatActivity {
     private EditText username,password,phonenumber,code;
 
     private Button getcode,signup;
+    ImageView title;
 
 
     @Override
@@ -48,6 +50,7 @@ public class SignUp extends AppCompatActivity {
 
         getcode = (Button) findViewById(R.id.btn_get_code);
         signup = (Button) findViewById(R.id.btn_signup);
+        title= (ImageView) findViewById(R.id.title_signup);
 
         Bmob.initialize(this, "c12ad56b69a6e30cb8cc89b566379d19");
 

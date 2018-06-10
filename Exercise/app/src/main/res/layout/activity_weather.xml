@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
+<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
@@ -27,68 +27,147 @@
         android:textColor="@android:color/white"
         android:layout_gravity="center_horizontal"
         android:layout_margin="36dp"
+        android:text="hhh"
         android:textSize="24sp" />
 
-    <FrameLayout
-            android:id="@+id/fl_weather"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:background="#69323232"
+            android:orientation="vertical"
+            android:padding="25dp">
 
-            <ScrollView
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="80dp">
+                android:gravity="right">
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_temperature"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#50323232"
-                    android:layout_margin="24dp"
-                    android:padding="18dp"
-                    android:orientation="vertical">
+                    android:textColor="@color/colorWhite"
+                    android:text="hxxx"
+                    android:textSize="45dp" />
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="right">
-
-                        <TextView
-                            android:id="@+id/tv_temperature"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="35dp"/>
-
-                    </RelativeLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_icon_weather"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white"
-                        android:text="Loading" />
-
-                    <TextView
-                        android:id="@+id/tv_weather_search_results_json"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Make a search!"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-            </ScrollView>
+            </RelativeLayout>
 
 
 
-        </FrameLayout>
+            <ImageView
+                android:id="@+id/iv_icon_weather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/testView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="..."
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/air_quanlity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="..."
+                android:textColor="@android:color/white"
+                android:textSize="25sp" />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:rowCount="4"
+                android:columnCount="3">
+
+
+                <TextView
+                    android:id="@+id/date1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="111"
+                    android:textColor="@android:color/white"
+                    android:layout_weight="1"
+                    android:textSize="22sp" />
+
+                <ImageView
+                    android:id="@+id/weather1"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/weather" />
+
+                <TextView
+                    android:id="@+id/temp_future1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="222"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/date2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="333"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp" />
+                <ImageView
+                    android:id="@+id/weather2"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="40dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/weather"/>
+
+                <TextView
+                    android:id="@+id/temp_future2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="333"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp" />
+
+
+
+                <TextView
+                    android:id="@+id/dirc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="第三天温"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:layout_columnSpan="3"/>
+
+            </GridLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/fl_weather"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
 
 </FrameLayout>
 

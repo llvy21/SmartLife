@@ -293,7 +293,7 @@ public class Map extends AppCompatActivity {
     }
 
     private void addOverlay(double lat, double lon) {
-        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher);
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromResource(R.drawable.location);
         LatLng latLng = new LatLng(lat, lon);
         Marker marker;
         OverlayOptions options;

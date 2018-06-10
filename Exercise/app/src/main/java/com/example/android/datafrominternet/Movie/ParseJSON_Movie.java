@@ -34,9 +34,14 @@ public class ParseJSON_Movie extends Throwable {
             String img = movies.getString("img");
             String cast = movies.getString("star");
             String remark = movies.getString("scm");
+            String director = movies.getString("dir");
+            String kind = movies.getString("cat");
+            String cinema = movies.getString("showInfo");
+            String date = movies.getString("rt");
 
-            MovieData dataObject = new MovieData(name,cast,img,remark);
 
+            MovieData dataObject = new MovieData(name,cast,img,remark,director,kind,cinema,date);
+            Log.d("test",dataObject.getCast()+"cast is balabalabal");
             movieDataArrayList.add(dataObject);
 
             Log.d("test", name+" ");

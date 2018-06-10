@@ -2,6 +2,7 @@ package com.example.android.datafrominternet;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.bmob.v3.Bmob;
@@ -23,16 +26,18 @@ import cn.bmob.v3.listener.LogInListener;
 
 public class LogIn extends AppCompatActivity {
 
-    Button logIn,signUp;
+    Button logIn;
+    TextView signUp;
     EditText phonenumber,password;
-    ProgressBar progressBar;
+    ImageView title;
+    //ProgressBar progressBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        progressBar = (ProgressBar) findViewById(R.id.pgb_login);
+        // progressBar = (ProgressBar) findViewById(R.id.pgb_login);
 
         Bmob.initialize(this, "c12ad56b69a6e30cb8cc89b566379d19");
 
@@ -40,7 +45,7 @@ public class LogIn extends AppCompatActivity {
         String number = preferences.getString("phonenumber",null);
         String psw = preferences.getString("password",null);
         if (number!=null){
-            progressBar.setVisibility(View.VISIBLE);
+            // progressBar.setVisibility(View.VISIBLE);
             BmobUser.loginByAccount(number, psw, new LogInListener<BmobUser>() {
                 @Override
                 public void done(BmobUser bmobUser, BmobException e) {
@@ -51,21 +56,22 @@ public class LogIn extends AppCompatActivity {
                         finish();
                     }else {
                         Toast.makeText(LogIn.this, "自动登录失败", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.INVISIBLE);
+                        //  progressBar.setVisibility(View.INVISIBLE);
                     }
                 }
             });
         }
 
         logIn = (Button) findViewById(R.id.btn_l_log_in);
-        signUp = (Button) findViewById(R.id.btn_l_sign_up);
+        signUp = (TextView) findViewById(R.id.btn_l_sign_up);
+        signUp.getPaint().setFlags(Paint. UNDERLINE_TEXT_FLAG ); //下划线
         phonenumber = (EditText) findViewById(R.id.et_l_phonenumber);
         password = (EditText) findViewById(R.id.et_l_password);
-
+        title = (ImageView) findViewById(R.id.tim_title);
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressBar.setVisibility(View.VISIBLE);
+                //    progressBar.setVisibility(View.VISIBLE);
                 BmobUser.loginByAccount(phonenumber.getText().toString(), password.getText().toString(), new LogInListener<BmobUser>() {
                     @Override
                     public void done(BmobUser bmobUser, BmobException e) {
@@ -84,7 +90,7 @@ public class LogIn extends AppCompatActivity {
                         }
                     }
                 });
-                progressBar.setVisibility(View.INVISIBLE);
+                //   progressBar.setVisibility(View.INVISIBLE);
             }
         });
 

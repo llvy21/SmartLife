@@ -72,6 +72,15 @@ public class Emojify {
                     emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
                             R.drawable.disappointed_face);
                     break;
+                case SLIGHTLY_SMILE:
+                    emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
+                            R.drawable.slightly_smile);
+                case CLOSED_LARGE_SMILE:
+                    emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
+                            R.drawable.closed_smile_large);
+                case LARGE_SMILE:
+                    emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
+                            R.drawable.smile_open_mouth);
                 default:
                     emojiBitmap = BitmapFactory.decodeResource(context.getResources(),
                             R.drawable.ic_launcher);
@@ -93,19 +102,22 @@ public class Emojify {
         Log.d("test", "getClassifications: rightEyeOpenProb = "
                 + face.getIsRightEyeOpenProbability());
         Emoji emoji = null;
-        double isSmile = 0.4;
-        double isSad = 0.19;
+        double isSmile = 0.3;
+        double isSad = 0.1;
         double eyeIsOpen = 0.7;
+        double isHappy = 0.7;
         boolean smile = face.getIsSmilingProbability() > isSmile;
         boolean leftEyeOpen = face.getIsLeftEyeOpenProbability() > eyeIsOpen;
         boolean rightEyeOpen = face.getIsRightEyeOpenProbability() > eyeIsOpen;
         boolean sad = face.getIsSmilingProbability() < isSad;
+        boolean veryHappy = face.getIsSmilingProbability() > isHappy;
+        boolean notHappy =  face.getIsSmilingProbability() < isSmile && face.getIsSmilingProbability()>isSad;
 
         if(smile) {
             if (!leftEyeOpen && rightEyeOpen) {
-                emoji = Emoji.LEFT_WINK;
-            }  else if(!rightEyeOpen && leftEyeOpen){
                 emoji = Emoji.RIGHT_WINK;
+            }  else if(!rightEyeOpen && leftEyeOpen){
+                emoji = Emoji.LEFT_WINK;
             } else if (!rightEyeOpen){
                 emoji = Emoji.CLOSED_EYE_SMILE;
             } else {
@@ -117,6 +129,12 @@ public class Emojify {
             } else {
                 emoji = Emoji.SAD;
             }
+        } else if(notHappy){
+            emoji = Emoji.SLIGHTLY_SMILE;
+        }else if(veryHappy){
+            if (!leftEyeOpen && !rightEyeOpen) {
+                emoji = Emoji.CLOSED_LARGE_SMILE;
+            }else emoji = Emoji.LARGE_SMILE;
         } else {
             emoji = Emoji.NEUTRAL;
         }
@@ -160,7 +178,10 @@ public class Emojify {
         RIGHT_WINK,
         CLOSED_EYE_SMILE,
         CLOSED_EYE_SAD,
-        NEUTRAL
+        NEUTRAL,
+        CLOSED_LARGE_SMILE,
+        LARGE_SMILE,
+        SLIGHTLY_SMILE
     }
 
 
