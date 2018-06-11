@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
 
     <Spinner
         android:id="@+id/spinnner"
@@ -30,8 +32,12 @@
 
     <Button
         android:id="@+id/btn_Add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+        android:layout_width="180dp"
+        android:layout_height="89dp"
+        android:background="@drawable/note_btn"
+        android:text="确      定"
+        android:textSize="20dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorWhite" />
 
 </LinearLayout>

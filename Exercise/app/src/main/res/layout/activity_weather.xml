@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:text="hxxx"
-                    android:textSize="45dp" />
+                    android:textSize="43dp" />
 
             </RelativeLayout>
 

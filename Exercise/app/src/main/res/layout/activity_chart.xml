@@ -16,13 +16,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="记   账" />
 
         <TextView
+            android:id="@+id/tv_sumup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/tv_sumup"/>
+            android:text="asdf" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/mPieChart"

@@ -55,7 +55,7 @@ public class ParseJSON_Weather extends Throwable {
         weatherdata.put("wind_sc",now.getString("wind_sc"));
 
 
-        for (int i=0; i<8; i++){//0157
+        for (int i=0; i<8; i++){
             JSONObject lifestyle = (JSONObject) Weather.getJSONArray("lifestyle").get(i);
             weatherdata.put("txt"+i,lifestyle.getString("txt"));
         }
